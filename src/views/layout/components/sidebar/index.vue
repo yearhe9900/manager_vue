@@ -1,19 +1,24 @@
 <template>
-    <el-menu mode="vertical" unique-opened :default-active="$route.path" background-color="#304156" text-color="#fff" active-text-color="#409EFF">
-      <sidebar-item :routes="routes"></sidebar-item>
-    </el-menu>
+  <el-menu
+    class="el-menu-vertical-demo"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+    router
+  >
+    <sidebar-item :routes="routes"></sidebar-item>
+  </el-menu>
 </template>
 
 <script>
-import sidebarItem from './sidebarItem'
+import sidebarItem from "./sidebarItem";
 
 export default {
   components: { sidebarItem },
   computed: {
     routes() {
-      return global.antRouter
+      return global.antRouter;
     }
-   
   }
-}
+};
 </script>
