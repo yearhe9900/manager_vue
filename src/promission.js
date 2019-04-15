@@ -11,11 +11,11 @@ router.beforeEach((to, from, next) => {
     if (!getObjArr('router')) {
       axios.get('https://www.easy-mock.com/mock/5a5da330d9b48c260cb42ca8/example/antrouter').then(res => {
         getRouter = res.data.data.router//后台拿到路由
-        saveObjArr('router', getRouter) //存储路由到localStorage
+        saveObjArr('router', getRouter) //存储路由到sessionStorage
 
         routerGo(to, next)//执行路由跳转方法
       })
-    } else {//从localStorage拿到了路由
+    } else {//从sessionStorage拿到了路由
       getRouter = getObjArr('router')//拿到路由
       routerGo(to, next)
     }
@@ -31,12 +31,12 @@ function routerGo(to, next) {
   next({ ...to, replace: true })
 }
 
-function saveObjArr(name, data) { //localStorage 存储数组对象的方法
-  localStorage.setItem(name, JSON.stringify(data))
+function saveObjArr(name, data) { //sessionStorage 存储数组对象的方法
+  sessionStorage.setItem(name, JSON.stringify(data))
 }
 
-function getObjArr(name) { //localStorage 获取数组对象的方法
-  return JSON.parse(window.localStorage.getItem(name));
+function getObjArr(name) { //sessionStorage 获取数组对象的方法
+  return JSON.parse(window.sessionStorage.getItem(name));
 }
 
 function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
