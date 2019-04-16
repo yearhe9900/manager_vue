@@ -6,6 +6,10 @@
         :key="item.children[0].name"
       >
         <el-menu-item :index="item.path+'/'+item.children[0].path">
+          <i
+            v-if="item.children[0].meta&&item.children[0].meta.icon"
+            :class="item.children[0].meta.icon"
+          ></i>
           <span
             v-if="item.children[0].meta&&item.children[0].meta.title"
           >{{item.children[0].meta.title}}</span>
@@ -14,6 +18,7 @@
 
       <el-submenu v-else :index="item.name||item.path" :key="item.name">
         <template slot="title">
+          <i v-if="item.meta&&item.meta.icon" :class="item.meta.icon"></i>
           <span v-if="item.meta&&item.meta.title">{{item.meta.title}}</span>
         </template>
 
@@ -27,6 +32,7 @@
 
           <span v-else :key="child.name">
             <el-menu-item :index="item.path+'/'+child.path">
+              <i v-if="child.meta&&child.meta.icon" :class="child.meta.icon"></i>
               <span v-if="child.meta&&child.meta.title">{{child.meta.title}}</span>
             </el-menu-item>
           </span>
@@ -50,7 +56,6 @@ export default {
   },
   computed: {
     routesClass: function() {
-      console.log(this.routes.filter(item => !item.hidden && item.children))
       return this.routes.filter(item => !item.hidden && item.children);
     }
   }
