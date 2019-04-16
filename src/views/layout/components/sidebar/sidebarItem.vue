@@ -50,13 +50,9 @@ export default {
   },
   computed: {
     routesClass: function() {
+      console.log(this.routes.filter(item => !item.hidden && item.children))
       return this.routes.filter(item => !item.hidden && item.children);
     }
   }
 };
 </script>
-<style>
-a {
-  text-decoration: none;
-}
-</style>
