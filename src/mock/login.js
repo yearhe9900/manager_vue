@@ -22,29 +22,38 @@ const getMenuInfo = function () {
       }]
     },
     {
-      "path": "/example",
+      "path": "/logs",
       "component": "Layout",
-      "redirect": "/example/table",
-      "name": "Example",
+      "redirect": "/logs/web",
+      "name": "Logs",
       "meta": {
-        "title": "案例",
+        "title": "日志",
         "icon": "el-icon-menu"
       },
       "children": [{
-          "path": "table",
-          "name": "Table",
-          "component": "table/index",
+          "path": "webadmin",
+          "name": "WebAdmin",
+          "component": "logs/webadmin/index",
           "meta": {
-            "title": "表格",
+            "title": "站点日志",
             "icon": "el-icon-menu"
           }
         },
         {
-          "path": "tree",
-          "name": "Tree",
-          "component": "tree/index",
+          "path": "webapi",
+          "name": "WebApi",
+          "component": "logs/webapi/index",
           "meta": {
-            "title": "树形菜单",
+            "title": "接口日志",
+            "icon": "el-icon-menu"
+          }
+        },
+        {
+          "path": "manager",
+          "name": "Manager",
+          "component": "logs/manager/index",
+          "meta": {
+            "title": "配置管理",
             "icon": "el-icon-menu"
           }
         }

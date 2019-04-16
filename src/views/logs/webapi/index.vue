@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    我是tree
+    接口日志
   </div>
 </template>
 
@@ -11,12 +11,12 @@ export default {
     }
   },
   filters: {
-   
+
   },
   created() {
   },
   methods: {
-   
+
   }
 }
 </script>
