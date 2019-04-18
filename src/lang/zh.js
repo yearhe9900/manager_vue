@@ -64,6 +64,7 @@ export default {
     externalLink: '外链'
   },
   navbar: {
+    title: '管理系统',
     logOut: '退出登录',
     dashboard: '首页',
     github: '项目地址',

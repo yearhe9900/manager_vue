@@ -64,6 +64,7 @@ export default {
     externalLink: 'External Link'
   },
   navbar: {
+    title: 'manager',
     logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
