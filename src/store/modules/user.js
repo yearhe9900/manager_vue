@@ -73,19 +73,16 @@ const actions = {
         username: username.trim(),
         password: password
       }).then(response => {
-        // commit('SET_TOKEN', response.content.auth_token)
-        commit('SET_TOKEN', 'admin-token')
+        commit('SET_TOKEN', response.content.auth_token)
         commit('SET_EXPIRES_IN', response.content.expires_in)
         commit('SET_REFRESH_TOKEN', response.content.refresh_token)
         commit('SET_TOKEN_TYPE', response.content.token_type)
-        // setToken(response.content.auth_token)
-        setToken('admin-token')
+        setToken(response.content.auth_token)
         setExpiresin(response.content.expires_in)
         setRefreshToken(response.content.refresh_token)
         setTokentype(response.content.token_type)
         resolve()
       }).catch(error => {
-        console.log(error)
         reject(error)
       })
     })
@@ -97,12 +94,12 @@ const actions = {
     state
   }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo().then(response => {
         const {
-          data
+          content
         } = response
 
-        if (!data) {
+        if (!content) {
           reject('Verification failed, please Login again.')
         }
 
@@ -111,7 +108,7 @@ const actions = {
           name,
           avatar,
           introduction
-        } = data
+        } = content
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -122,7 +119,7 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
-        resolve(data)
+        resolve(content)
       }).catch(error => {
         reject(error)
       })
