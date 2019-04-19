@@ -113,8 +113,6 @@ export default {
     groupName: 'Group Name',
     cdt: 'Creat DataTime',
     udt: 'Update DataTime',
-    enable: 'Enable',
-    disable: 'Disable',
     dragTips2: 'The after dragging order',
     title: 'Title',
     importance: 'Imp',
@@ -145,17 +143,18 @@ export default {
     description: 'Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.',
     documentation: 'Document introduction'
   },
-  excel: {
-    export: 'Export',
-    selectedExport: 'Export Selected Items',
-    placeholder: 'Please enter the file name (default excel-list)'
+  datastatus: {
+    enable: 'Enable',
+    disable: 'Disable',
+    all: 'All'
   },
-  zip: {
-    export: 'Export',
-    placeholder: 'Please enter the file name (default file)'
+  result: {
+    success: 'Success',
+    fail: 'Fail',
+    error: 'Error'
   },
-  pdf: {
-    tips: 'Here we use window.print() to implement the feature of downloading PDF.'
+  rules: {
+    groupName: 'The group name is required'
   },
   theme: {
     change: 'Change Theme',
@@ -167,6 +166,10 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  textMsg: {
+    edit: 'Edit',
+    create: 'Creat'
   },
   settings: {
     title: 'Page style setting',

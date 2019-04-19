@@ -9,13 +9,13 @@ import {
   removeToken,
   // getExpiresin,
   setExpiresin,
-  // removeExpiresin,
+  removeExpiresin,
   // getRefreshToken,
   setRefreshToken,
-  // removeRefreshToken,
+  removeRefreshToken,
   // getTokentype,
-  setTokentype
-  // removeTokentype
+  setTokentype,
+  removeTokentype
 } from '@/utils/auth'
 import router, {
   resetRouter
@@ -135,7 +135,13 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_EXPIRES_IN', '')
+        commit('SET_REFRESH_TOKEN', '')
+        commit('SET_TOKEN_TYPE', '')
         removeToken()
+        removeExpiresin()
+        removeRefreshToken()
+        removeTokentype()
         resetRouter()
         resolve()
       }).catch(error => {
@@ -151,10 +157,18 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_EXPIRES_IN', '')
+      commit('SET_REFRESH_TOKEN', '')
+      commit('SET_TOKEN_TYPE', '')
       removeToken()
+      removeExpiresin()
+      removeRefreshToken()
+      removeTokentype()
       resolve()
     })
   },
+
+  refreshToken() {},
 
   // Dynamically modify permissions
   changeRoles({
