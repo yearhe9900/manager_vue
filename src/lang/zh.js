@@ -109,9 +109,13 @@ export default {
     imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
   },
   table: {
-    dynamicTips1: '固定表头, 按照表头顺序排序',
-    dynamicTips2: '不固定表头, 按照点击顺序排序',
-    dragTips1: '默认顺序',
+    id: 'ID',
+    numberOrder: '序号',
+    groupName: '组名',
+    cdt: '创建时间',
+    udt: '修改时间',
+    enable: '启用',
+    disable: '禁用',
     dragTips2: '拖拽后顺序',
     title: '标题',
     importance: '重要性',
@@ -121,7 +125,7 @@ export default {
     add: '添加',
     export: '导出',
     reviewer: '审核人',
-    id: '序号',
+
     date: '时间',
     author: '作者',
     readings: '阅读数',

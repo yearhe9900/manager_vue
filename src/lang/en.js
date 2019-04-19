@@ -108,9 +108,13 @@ export default {
     imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.'
   },
   table: {
-    dynamicTips1: 'Fixed header, sorted by header order',
-    dynamicTips2: 'Not fixed header, sorted by click order',
-    dragTips1: 'The default order',
+    id: 'ID',
+    numberOrder: 'NO.',
+    groupName: 'Group Name',
+    cdt: 'Creat DataTime',
+    udt: 'Update DataTime',
+    enable: 'Enable',
+    disable: 'Disable',
     dragTips2: 'The after dragging order',
     title: 'Title',
     importance: 'Imp',
@@ -120,7 +124,7 @@ export default {
     add: 'Add',
     export: 'Export',
     reviewer: 'reviewer',
-    id: 'ID',
+
     date: 'Date',
     author: 'Author',
     readings: 'Readings',
