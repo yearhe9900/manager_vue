@@ -2,12 +2,12 @@ import { getLanguage } from '@/lang/index'
 
 const state = {
   sidebar: {
-    opened: sessionStorage.getItem('sidebarStatus') ? !!+sessionStorage.getItem('sidebarStatus') : true,
+    opened: localStorage.getItem('sidebarStatus') ? !!+localStorage.getItem('sidebarStatus') : true,
     withoutAnimation: false
   },
   device: 'desktop',
   language: getLanguage(),
-  size: sessionStorage.getItem('size') || 'medium'
+  size: localStorage.getItem('size') || 'medium'
 }
 
 const mutations = {
@@ -15,13 +15,13 @@ const mutations = {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
     if (state.sidebar.opened) {
-      sessionStorage.setItem('sidebarStatus', 1)
+      localStorage.setItem('sidebarStatus', 1)
     } else {
-      sessionStorage.setItem('sidebarStatus', 0)
+      localStorage.setItem('sidebarStatus', 0)
     }
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    sessionStorage.setItem('sidebarStatus', 0)
+    localStorage.setItem('sidebarStatus', 0)
     state.sidebar.opened = false
     state.sidebar.withoutAnimation = withoutAnimation
   },
@@ -30,11 +30,11 @@ const mutations = {
   },
   SET_LANGUAGE: (state, language) => {
     state.language = language
-    sessionStorage.setItem('language', language)
+    localStorage.setItem('language', language)
   },
   SET_SIZE: (state, size) => {
     state.size = size
-    sessionStorage.setItem('size', size)
+    localStorage.setItem('size', size)
   }
 }
 
