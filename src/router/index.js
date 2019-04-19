@@ -6,6 +6,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import ikwordRouter from './modules/ikword'
 
 /* Router Modules */
 
@@ -86,11 +87,13 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [{
-  path: '*',
-  redirect: '/404',
-  hidden: true
-}]
+export const asyncRoutes = [
+  ikwordRouter, {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
+]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

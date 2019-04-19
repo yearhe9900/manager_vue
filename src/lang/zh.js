@@ -1,8 +1,9 @@
 export default {
   route: {
     dashboard: '首页',
-    documentation: '文档',
-    guide: '引导页',
+    ikword: '分词',
+    managerikword: '分词管理',
+    managergroup: '分组管理',
     permission: '权限测试页',
     rolePermission: '角色权限',
     pagePermission: '页面权限',
@@ -28,7 +29,7 @@ export default {
     lineChart: '折线图',
     mixChart: '混合图表',
     example: '综合实例',
-    nested: '路由嵌套',
+
     menu1: '菜单1',
     'menu1-1': '菜单 1-1',
     'menu1-2': '菜单 1-2',

@@ -1,8 +1,9 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    documentation: 'Documentation',
-    guide: 'Guide',
+    ikword: 'IK Word',
+    managerikword: 'IK Manager',
+    managergroup: 'Group Manager',
     permission: 'Permission',
     pagePermission: 'Page Permission',
     rolePermission: 'Role Permission',
@@ -28,7 +29,6 @@ export default {
     lineChart: 'Line Chart',
     mixChart: 'Mix Chart',
     example: 'Example',
-    nested: 'Nested Routes',
     menu1: 'Menu 1',
     'menu1-1': 'Menu 1-1',
     'menu1-2': 'Menu 1-2',
