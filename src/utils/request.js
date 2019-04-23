@@ -6,9 +6,7 @@ import {
 import store from '@/store'
 import {
   getToken,
-  getTokentype,
-  getRefreshToken,
-  getExpiresin
+  getTokentype
 } from '@/utils/auth'
 
 // const Success = 200 // 请求成功
