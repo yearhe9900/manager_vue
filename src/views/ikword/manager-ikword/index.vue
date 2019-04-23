@@ -1,9 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <span class="filter-item">{{ $t('table.groupName') }}</span>
+      <span class="filter-item">{{ $t('table.name') }}</span>
       <el-input
         v-model="listQuery.name"
+        :placeholder="$t('table.name')"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <span class="filter-item">{{ $t('table.groupName') }}</span>
+      <el-input
+        v-model="listQuery.groupName"
         :placeholder="$t('table.groupName')"
         style="width: 200px;"
         class="filter-item"
@@ -17,7 +25,12 @@
         style="width: 90px"
         class="filter-item"
       >
-        <el-option v-for="item in statusOptions" :key="item" :label="item | statusNameFilter" :value="item" />
+        <el-option
+          v-for="item in statusOptions"
+          :key="item"
+          :label="item | statusNameFilter"
+          :value="item"
+        />
       </el-select>
       <span class="filter-item">{{ $t('table.cdt') }}</span>
       <el-date-picker
@@ -51,14 +64,22 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
-      >{{ $t('table.search') }}</el-button>
+      >{{ $t('button.search') }}</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
         @click="handleCreate"
-      >{{ $t('table.add') }}</el-button>
+      >{{ $t('button.add') }}</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="success"
+        plain
+        icon="el-icon-share"
+        @click="handlePublish"
+      >{{ $t('button.publish') }}</el-button>
     </div>
 
     <el-table
@@ -70,9 +91,14 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column :label="$t('table.groupName')" min-width="150px">
+      <el-table-column :label="$t('table.name')" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.groupName')" min-width="150px">
+        <template slot-scope="{row}">
+          <span @click="handleUpdate(row)">{{ row.groupName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.cdt')" width="150px" align="center">
@@ -128,10 +154,27 @@
         :model="temp"
         label-position="left"
         label-width="70px"
-        style="width: 400px; margin-left:50px;"
       >
-        <el-form-item :label="$t('table.groupName')" prop="name">
+        <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="temp.name" />
+        </el-form-item>
+        <el-form-item :label="$t('table.groupId')" prop="groupId">
+          <el-select
+            v-model="temp.groupId"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入关键词"
+            :remote-method="remoteMethod"
+            :loading="loading"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,8 +198,14 @@
 </template>
 
 <script>
-
-import { fetchList, modifyStatus, createGroup, updateGroup } from '@/api/ikword'
+import {
+  getWords,
+  modifyWordStatus,
+  createWord,
+  updateWord,
+  getEnableGroupByName,
+  publishWords
+} from '@/api/ikword'
 
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -184,63 +233,78 @@ export default {
   },
   data() {
     return {
+      options: [],
       pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
           }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
+        ]
       },
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
+      loading: true,
       listQuery: {
         pageno: 1,
         pagesize: 10,
         name: '',
         enable: 0,
         cdt: '',
-        udt: ''
+        udt: '',
+        groupName: ''
       },
       statusOptions: [0, 1, 2],
       temp: {
         id: '',
-        name: ''
+        name: '',
+        groupId: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: 'Edit',
-        create: 'Create'
+        update: this.$t('textMsg.edit'),
+        create: this.$t('textMsg.create')
       },
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        groupName: [
+        name: [
           {
             required: true,
-            message: this.$t('rules.groupName'),
+            message: this.$t('rules.name'),
+            trigger: 'blur'
+          }
+        ],
+        groupId: [
+          {
+            required: true,
+            message: this.$t('rules.groupId'),
             trigger: 'blur'
           }
         ]
@@ -252,9 +316,19 @@ export default {
     this.getList()
   },
   methods: {
+    remoteMethod(query) {
+      this.loading = true
+      getEnableGroupByName({ name: query }).then(response => {
+        if (response.code === 200) {
+          this.loading = false
+          this.options = response.content
+        }
+      })
+      this.loading = false
+    },
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      getWords(this.listQuery).then(response => {
         if (response.code === 200) {
           this.list = response.content.result
           this.total = response.content.total
@@ -268,12 +342,12 @@ export default {
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.pageno = 1
       this.getList()
     },
     handleModifyStatus(row, enable) {
       this.listLoading = true
-      modifyStatus({
+      modifyWordStatus({
         id: row.id
       }).then(response => {
         if (response.code === 200) {
@@ -294,7 +368,8 @@ export default {
     resetTemp() {
       this.temp = {
         id: '',
-        name: ''
+        name: '',
+        groupId: ''
       }
     },
     handleCreate() {
@@ -309,8 +384,9 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.listLoading = true
-          createGroup({
-            name: this.temp.name
+          createWord({
+            name: this.temp.name,
+            groupId: this.temp.groupId
           }).then(response => {
             this.dialogFormVisible = false
             if (response.code === 200) {
@@ -329,6 +405,7 @@ export default {
               })
             }
             this.listLoading = false
+            this.resetTemp()
             this.getList()
           })
         }
@@ -343,13 +420,33 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handlePublish() {
+      publishWords().then(response => {
+        if (response.code === 200) {
+          this.$notify({
+            title: this.$t('result.success'),
+            message: response.message,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: this.$t('result.fail'),
+            message: response.message,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+    },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.listLoading = true
-          updateGroup({
+          updateWord({
             id: this.temp.id,
-            name: this.temp.name
+            name: this.temp.name,
+            groupId: this.temp.groupId
           }).then(response => {
             this.dialogFormVisible = false
             if (response.code === 200) {
@@ -368,6 +465,7 @@ export default {
               })
             }
             this.listLoading = false
+            this.resetTemp()
             this.getList()
           })
         }

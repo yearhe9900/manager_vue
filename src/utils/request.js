@@ -6,7 +6,9 @@ import {
 import store from '@/store'
 import {
   getToken,
-  getTokentype
+  getTokentype,
+  getRefreshToken,
+  getExpiresin
 } from '@/utils/auth'
 
 // create an axios instance
@@ -20,6 +22,14 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
+    const refreshToken = getRefreshToken()
+    const expiresin = getExpiresin()
+    const currentDate = new Date()
+    const currentDateNew = new Date()
+    currentDateNew.setMinutes(currentDateNew.getMinutes() + 10)
+    if (expiresin && refreshToken && new Date(expiresin) > currentDate && new Date(expiresin) < currentDateNew) {
+      console.log(currentDateNew)
+    }
 
     if (store.getters.token) {
       // let each request carry token --['Authorization'] as a custom key.

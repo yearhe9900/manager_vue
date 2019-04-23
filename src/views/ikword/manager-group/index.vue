@@ -51,14 +51,14 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
-      >{{ $t('table.search') }}</el-button>
+      >{{ $t('button.search') }}</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
         @click="handleCreate"
-      >{{ $t('table.add') }}</el-button>
+      >{{ $t('button.add') }}</el-button>
     </div>
 
     <el-table
@@ -156,7 +156,7 @@
 
 <script>
 
-import { fetchList, modifyStatus, createGroup, updateGroup } from '@/api/ikword'
+import { getGroups, modifyGroupStatus, createGroup, updateGroup } from '@/api/ikword'
 
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -254,7 +254,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      getGroups(this.listQuery).then(response => {
         if (response.code === 200) {
           this.list = response.content.result
           this.total = response.content.total
@@ -268,12 +268,12 @@ export default {
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.pageno = 1
       this.getList()
     },
     handleModifyStatus(row, enable) {
       this.listLoading = true
-      modifyStatus({
+      modifyGroupStatus({
         id: row.id
       }).then(response => {
         if (response.code === 200) {

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(data) {
+export function getGroups(data) {
   return request({
     url: '/api/Groups/GetGroup',
     method: 'post',
@@ -8,7 +8,15 @@ export function fetchList(data) {
   })
 }
 
-export function modifyStatus(data) {
+export function getEnableGroupByName(data) {
+  return request({
+    url: '/api/Groups/GetEnableGroupByName',
+    method: 'post',
+    data
+  })
+}
+
+export function modifyGroupStatus(data) {
   return request({
     url: '/api/Groups/ModifyGroupStatus',
     method: 'post',
@@ -29,5 +37,44 @@ export function updateGroup(data) {
     url: '/api/Groups/UpdateGroup',
     method: 'post',
     data
+  })
+}
+
+export function getWords(data) {
+  return request({
+    url: '/api/Words/GetWords',
+    method: 'post',
+    data
+  })
+}
+
+export function modifyWordStatus(data) {
+  return request({
+    url: '/api/Words/ModifyWordStatus',
+    method: 'post',
+    data
+  })
+}
+
+export function createWord(data) {
+  return request({
+    url: '/api/Words/AddOneWord',
+    method: 'post',
+    data
+  })
+}
+
+export function updateWord(data) {
+  return request({
+    url: '/api/Words/UpdateWord',
+    method: 'post',
+    data
+  })
+}
+
+export function publishWords() {
+  return request({
+    url: '/api/Words/Publish',
+    method: 'post'
   })
 }
