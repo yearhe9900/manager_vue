@@ -21,3 +21,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function refreshToken(data) {
+  return request({
+    url: '/api/Auth/RefreshToken',
+    method: 'post',
+    data
+  })
+}

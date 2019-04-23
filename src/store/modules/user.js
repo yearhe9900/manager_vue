@@ -1,7 +1,8 @@
 import {
   login,
   logout,
-  getInfo
+  getInfo,
+  refreshToken
 } from '@/api/user'
 import {
   getToken,
@@ -168,7 +169,25 @@ const actions = {
     })
   },
 
-  refreshToken() {},
+  refresh({
+    commit
+  }, refreshtoken) {
+    return new Promise((resolve, reject) => {
+      refreshToken(refreshtoken).then(response => {
+        commit('SET_TOKEN', response.content.auth_token)
+        commit('SET_EXPIRES_IN', response.content.expires_in)
+        commit('SET_REFRESH_TOKEN', response.content.refresh_token)
+        commit('SET_TOKEN_TYPE', response.content.token_type)
+        setToken(response.content.auth_token)
+        setExpiresin(response.content.expires_in)
+        setRefreshToken(response.content.refresh_token)
+        setTokentype(response.content.token_type)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
 
   // Dynamically modify permissions
   changeRoles({

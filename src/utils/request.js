@@ -11,6 +11,10 @@ import {
   getExpiresin
 } from '@/utils/auth'
 
+// const Success = 200 // 请求成功
+const LoginSuccess = 201// 登录成功
+const LoginFail = 601// 登录失败
+
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -22,18 +26,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    const refreshToken = getRefreshToken()
-    const expiresin = getExpiresin()
-    const currentDate = new Date()
-    const currentDateNew = new Date()
-    currentDateNew.setMinutes(currentDateNew.getMinutes() + 10)
-    if (expiresin && refreshToken && new Date(expiresin) > currentDate && new Date(expiresin) < currentDateNew) {
-      console.log(currentDateNew)
-    }
-
     if (store.getters.token) {
-      // let each request carry token --['Authorization'] as a custom key.
-      // please modify it according to the actual situation.
       config.headers['Authorization'] = getTokentype() + ' ' + getToken()
     }
     return config
@@ -81,6 +74,20 @@ service.interceptors.response.use(
         })
       }
       return Promise.reject(res.message || 'error')
+    } else if (res.code === LoginSuccess) {
+      Message({
+        message: res.message,
+        type: 'success',
+        duration: 5 * 1000
+      })
+      return res
+    } else if (res.code === LoginFail) {
+      Message({
+        message: res.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return res
     } else {
       return res
     }
