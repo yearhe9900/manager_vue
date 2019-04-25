@@ -1,6 +1,5 @@
 import {
   login,
-  logout,
   getInfo,
   refreshToken
 } from '@/api/user'
@@ -133,21 +132,17 @@ const actions = {
     state
   }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        commit('SET_EXPIRES_IN', '')
-        commit('SET_REFRESH_TOKEN', '')
-        commit('SET_TOKEN_TYPE', '')
-        removeToken()
-        removeExpiresin()
-        removeRefreshToken()
-        removeTokentype()
-        resetRouter()
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      commit('SET_EXPIRES_IN', '')
+      commit('SET_REFRESH_TOKEN', '')
+      commit('SET_TOKEN_TYPE', '')
+      removeToken()
+      removeExpiresin()
+      removeRefreshToken()
+      removeTokentype()
+      resetRouter()
+      resolve()
     })
   },
 
